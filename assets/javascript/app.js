@@ -10,3 +10,19 @@ firebase.initializeApp(config);
 
 // reference to firebase database
 var database = firebase.database();
+
+$(document).on('ready', function() {
+  database.ref().on('value', function(snapshot) {
+    var list = snapshot.val().list;
+    var listKeys = Object.keys(list);
+
+    for (var i = 0; i < listKeys.length; i++) {
+      var thisKey = listKeys[i];
+      var listItem = $('<li>').text(
+        list[thisKey].quantity + ' ' + ' ' + list[thisKey].unit + ' ' +
+        list[thisKey].name
+      );
+      $('#theList').append(listItem);
+    }
+  });
+});
