@@ -12,17 +12,40 @@ firebase.initializeApp(config);
 var database = firebase.database();
 
 $(document).on('ready', function() {
+  $('#reset').on('click', function() {
+    database.ref().set({
+      list: list,
+      units: units
+    });
+  });
+
   database.ref().on('value', function(snapshot) {
+    $('#theList').empty();
+    $('#done').empty();
     var list = snapshot.val().list;
     var listKeys = Object.keys(list);
 
     for (var i = 0; i < listKeys.length; i++) {
-      var thisKey = listKeys[i];
-      var listItem = $('<li>').text(
-        list[thisKey].quantity + ' ' + ' ' + list[thisKey].unit + ' ' +
-        list[thisKey].name
-      );
-      $('#theList').append(listItem);
+      var currentItem = list[listKeys[i]];
+      var listItem =
+        $('<li>').addClass('listItem').attr('data-key', listKeys[i]).text(
+          currentItem.quantity + ' ' + currentItem.unit + ' ' + currentItem.name
+        );
+      console.log(currentItem.collected);
+      if (currentItem.collected === false) {
+        $('#theList').append(listItem);
+      } else {
+        $('#done').append(listItem);
+      }
     }
+  });
+
+  $(document).on('click', '.listItem', function() {
+    $(this).remove();
+    console.log($(this).data('key'));
+    database.ref().child('list').child($(this).data('key'))
+            .update({
+              collected: true
+            });
   });
 });
