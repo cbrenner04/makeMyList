@@ -28,10 +28,13 @@ $(document).on('ready', function() {
     for (var i = 0; i < listKeys.length; i++) {
       var currentItem = list[listKeys[i]];
       var listItem =
-        $('<li>').addClass('listItem').attr('data-key', listKeys[i]).text(
-          currentItem.quantity + ' ' + currentItem.unit + ' ' + currentItem.name
-        );
-      console.log(currentItem.collected);
+        $('<button>').addClass('listItem btn btn-secondary')
+                     .attr('data-key', listKeys[i])
+                     .text(
+                       currentItem.quantity + ' ' + currentItem.unit + ' ' +
+                       currentItem.name
+                     );
+
       if (currentItem.collected === false) {
         $('#theList').append(listItem);
       } else {
