@@ -43,9 +43,8 @@ $(document).on('ready', function() {
     }
   });
 
-  $(document).on('click', '.listItem', function() {
+  $('#theList').on('click', '.listItem', function() {
     $(this).remove();
-    console.log($(this).data('key'));
     database.ref().child('list').child($(this).data('key'))
             .update({
               collected: true
